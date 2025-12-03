@@ -5,6 +5,10 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.send("D-ID Video API Server Working");
+});
+
 app.post("/generate", async (req, res) => {
     try {
         const { image_url, text } = req.body;
@@ -28,8 +32,9 @@ app.post("/generate", async (req, res) => {
 
         res.json(response.data);
     } catch (error) {
-        res.json({ error: error.message });
+        res.json({ error: error.message, details: error.response?.data });
     }
 });
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
